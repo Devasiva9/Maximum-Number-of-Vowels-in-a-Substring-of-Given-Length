@@ -1,0 +1,83 @@
+class Solution {
+    public int maxVowels(String s, int k) {
+        String vowels = "aeiou";
+        int count = 0;
+        int maxcount = 0;
+        for(int i = 0;i<k;i++)
+        {
+            if(vowels.indexOf(s.charAt(i)) != -1)
+            {
+                count++;
+            }
+        }
+        maxcount = Math.max(maxcount,count);
+        for(int i =k;i<s.length();i++)
+        {
+            if(vowels.indexOf(s.charAt(i-k)) != -1)
+            {
+                count--;
+            }
+            if (vowels.indexOf(s.charAt(i)) != -1) 
+            {
+                count++;
+            }
+            maxcount = Math.max(maxcount,count);
+        }
+
+        return maxcount;
+    }
+}
+
+Here’s a detailed description of the `maxVowels` function implemented in the code:
+
+### Function Description: `maxVowels(String s, int k)`
+
+The `maxVowels` function determines the maximum number of vowels that can be found in any substring of length `k` within the input string `s`. This is achieved using the sliding window technique, which efficiently examines each possible substring of the required length.
+
+### Parameters:
+- **`String s`**: The input string in which we want to find the maximum number of vowels in any substring of length `k`.
+- **`int k`**: The length of the substring to be examined.
+
+### Return Value:
+- The function returns an integer representing the maximum number of vowels found in any substring of length `k` within the input string `s`.
+
+### Steps of the Algorithm:
+1. **Initialize Variables**:
+   - `String vowels = "aeiou";`: A string containing all vowel characters. This will be used to check if a character is a vowel.
+   - `int maxVowelCount = 0;`: A variable to keep track of the maximum number of vowels encountered in any window of size `k`.
+   - `int currentVowelCount = 0;`: A variable to keep track of the number of vowels in the current window.
+
+2. **Count Vowels in the First Window**:
+   - The first `for` loop iterates over the first `k` characters of the string `s` to count how many of them are vowels.
+   - For each character in this initial window, if it's a vowel (i.e., if `vowels.indexOf(s.charAt(i)) != -1`), `currentVowelCount` is incremented.
+   - After processing the first window, `maxVowelCount` is set to the value of `currentVowelCount`.
+
+3. **Slide the Window Across the String**:
+   - The second `for` loop slides the window one character at a time, from the `k`th character to the end of the string.
+   - **Adjust the Vowel Count**:
+     - The character that is sliding out of the window (i.e., `s.charAt(i - k)`) is checked. If it's a vowel, `currentVowelCount` is decremented.
+     - The character that is sliding into the window (i.e., `s.charAt(i)`) is checked. If it's a vowel, `currentVowelCount` is incremented.
+   - **Update Maximum Vowel Count**:
+     - After adjusting for the new window, `maxVowelCount` is updated to be the maximum of its current value and `currentVowelCount`.
+
+4. **Return the Result**:
+   - Finally, the function returns `maxVowelCount`, which now holds the maximum number of vowels found in any substring of length `k` within the string `s`.
+
+### Example Walkthrough:
+
+Consider the input string `s = "abciiidef"` and `k = 3`.
+
+- **Initial Window (`abc`)**:
+  - Vowel count is `1` (only `a` is a vowel).
+- **Sliding the Window**:
+  - The window slides from `abc` to `bci` (`a` slides out, `i` slides in). Vowel count remains `1`.
+  - The window slides to `cii`. Vowel count increases to `2` (both `i` characters are vowels).
+  - The window slides to `iii`. Vowel count increases to `3` (all characters are vowels).
+  - As the window continues to slide, the vowel count may decrease, but the maximum observed count is `3`.
+
+### Performance:
+
+- **Time Complexity**: The time complexity of the function is `O(n)`, where `n` is the length of the string `s`. This is because each character is processed at most twice (once when it enters the window and once when it exits).
+- **Space Complexity**: The space complexity is `O(1)`, as only a few variables are used to store the counts and indices.
+
+This efficient approach ensures that the maximum number of vowels in any substring of length `k` is found without the need for multiple nested loops, making it suitable for large strings.
